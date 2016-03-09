@@ -22,7 +22,7 @@ public class Terrain {
     for(int y=0; y < h; y+= 1) {
      for(int x=0; x < w; x+= 1) {
        float xx = map(x, 0, w-1, -w/2, w/2);
-       float yy = map(this.heightMap.getValue(x, y), 0.0, 1.0, 0.0, this.maxHeight);
+       float yy = map(this.heightMap.getValue(x, y), 0.0, 1.0, -this.maxHeight/2, this.maxHeight/2);
        float zz = map(y, 0, h-1, -h/2, h/2);
        this.vertices[y*w + x] = new PVector(xx*squareSize, yy, zz*squareSize);
      }
