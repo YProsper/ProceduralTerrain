@@ -1,10 +1,12 @@
 import peasy.*;
+import controlP5.*;
 
 Terrain t1;
 
 PeasyCam cam;
+ControlP5 cp5;
+
 HeightMap map;
-PShader ambiant;
 
 float angle = 0.0;
 
@@ -13,9 +15,16 @@ void setup() {
   smooth();
   //noFill();
   cam = new PeasyCam(this, 1024);
- 
+  
+  cp5 = new ControlP5(this);
+  cp5.setAutoDraw(false);
+  cp5.addButton("")
+     .setSize(200, 50)
+     .setPosition(width - 220, height - 70)
+     .setCaptionLabel("Generate new terrain")
+     .setId(0);
+     
   t1 = newTerrain(0);
- 
 }
 
 void draw(){
@@ -25,6 +34,8 @@ void draw(){
   t1.display();
    
   angle += 0.01;
+  
+  drawGui();
 }
 
 Terrain newTerrain(int method){
@@ -46,7 +57,7 @@ void keyPressed(){
 }
 
 MidpointDisplacementHeightMap generate(int exponent){
-  MidpointDisplacementHeightMap result = new MidpointDisplacementHeightMap(exponent, 0.5, 0.5);
+  MidpointDisplacementHeightMap result = new MidpointDisplacementHeightMap(exponent, 0.3, 0.5);
   return result;
 }
   
@@ -58,4 +69,22 @@ NoisyHeightMap generateNoisy(int w, int h){
 
 Terrain generateTerrain(HeightMap map, int squareSize, int height){
   return new Terrain(map, squareSize, height);
+}
+
+void drawGui() {
+  hint(DISABLE_DEPTH_TEST);
+  cam.beginHUD();
+  cp5.draw();
+  cam.endHUD();
+  hint(ENABLE_DEPTH_TEST);
+}
+
+void controlEvent(ControlEvent theEvent) {
+  switch(theEvent.getController().getId()){
+    case 0:
+    {
+      t1 = newTerrain(0);
+      break;
+    }
+  }
 }
